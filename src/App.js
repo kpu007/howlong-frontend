@@ -1,23 +1,43 @@
+import React, {useState, useEffect} from 'react'
+import dateService from './services/dateService'
 import logo from './logo.svg';
 import './App.css';
 
 function App() {
+
+  const [dates, setDates] = useState([])
+
+  useEffect(() => {
+    dateService.getAll().then(response => {
+      console.log(response.data)
+      setDates(response.data)
+  })
+  }, [])  
+
+  const Row = ({date}) => {
+    console.log(date.dateName)
+
+    return (
+      <tr>
+        <td>
+          {date.dateName}
+        </td>
+        <td>
+          {date.currentDate}
+        </td>
+      </tr>
+    )
+  }
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <table>
+        <tbody>
+          {dates.map(date => <Row date={date}/>)}
+        </tbody>
+      </table>
+
+      
     </div>
   );
 }

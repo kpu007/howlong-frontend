@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react'
 import dateService from './services/dateService'
+import BootstrapTable from 'react-bootstrap-table-next'
 import './App.css';
 
 function App() {
@@ -10,7 +11,7 @@ function App() {
     dateService.getAll().then(response => {
       console.log(response.data)
       setDates(response.data)
-  })
+    })
   }, [])  
 
   const findDateDifference = (date1, date2) => {
@@ -28,7 +29,6 @@ function App() {
       return "Data not tracked to this point yet, array not long enough!"
     }
 
-    //need to convert to date because mongoose apparently gets them as strings
     let dateValue = new Date(dateObj.dateArray[timePeriod])
 
     if(findDateDifference(dateValue, new Date('January 1, 1970')) == 0) {
@@ -38,54 +38,54 @@ function App() {
     return findDateDifference(new Date(dateObj.currentDate), dateValue)
   }
 
-  const formatDateNicely = (date) => {
-    const year = date.getFullYear()
-    const day = date.getDate()
-    const month = date.getMonth() + 1 //months are zero-indexed
-
-    return month + "/" + day + "/" + year
+  const createTimeDifferenceFunction = (timePeriod) => {
+    const resultFunction = (cell, row) => getDifferenceBetweenTime(row, timePeriod)
+    return resultFunction
   }
 
-  const Row = ({date}) => {
-    console.log(date.dateName)
+  const dateFormatter = (cell, row) => {
+    const dateVariable = new Date(row.currentDate)
+    const year = dateVariable.getFullYear()
+    const day = dateVariable.getDate()
+    const month = dateVariable.getMonth() + 1 //months are zero-indexed
+    const dateString = month + "/" + day + "/" + year
 
     return (
-      <tr>
-        <td>
-          {date.dateName}
-        </td>
-        <td>
-          {formatDateNicely(new Date(date.currentDate))}
-        </td>
-        <td>
-          {getDifferenceBetweenTime(date, 1)}
-        </td>
-        <td>
-          {getDifferenceBetweenTime(date, 7)}
-        </td>
-        <td>
-          {getDifferenceBetweenTime(date, 30)}
-        </td>
-      </tr>
+        <div>
+            {dateString}
+        </div>
     )
-  }
+}
+
+  const columns = [{
+    dataField: 'dateName',
+    text: 'Date Name',
+    sort: true
+  }, {
+    dataField: 'currentDate',
+    text: 'Current Date',
+    sort: true,
+    formatter: dateFormatter
+  }, {
+    dataField: 'oneDayDifference',
+    text: 'Progress since yesterday',
+    isDummyField: 'true',
+    formatter: createTimeDifferenceFunction(1)
+  }, {
+    dataField: 'sevenDayDifference',
+    text: 'Progress since 7 days',
+    isDummyField: 'true',
+    formatter: createTimeDifferenceFunction(7)
+  }, {
+    dataField: 'thirtyDayDifference',
+    text: 'Progress since 30 days',
+    isDummyField: 'true',
+    formatter: createTimeDifferenceFunction(30)
+  },]
 
   return (
     <div className="App">
-      <table>
-        <thead>
-          <tr>
-            <th>Date Name</th>
-            <th>Current Date</th>
-            <th>Progress since the previous day</th>
-            <th>Progress since 7 days</th>
-            <th>Progress since 30 days</th>
-          </tr>
-        </thead>
-        <tbody>
-          {dates.map(date => <Row date={date}/>)}
-        </tbody>
-      </table>
+      <BootstrapTable keyField='dateName' data={dates} columns={columns} />
     </div>
   );
 }

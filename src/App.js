@@ -6,6 +6,7 @@ import './App.css';
 function App() {
 
   const [dates, setDates] = useState([])
+  const progressPoints = [1, 2, 3, 4, 5, 6, 7, 15, 30]
 
   useEffect(() => {
     dateService.getAll().then(response => {
@@ -26,14 +27,10 @@ function App() {
     }
 
     if(dateObj.dateArray.length <= timePeriod) {
-      return "Data not tracked to this point yet, array not long enough!"
+      return "N/A"
     }
 
     let dateValue = new Date(dateObj.dateArray[timePeriod])
-
-    if(findDateDifference(dateValue, new Date('January 1, 1970')) == 0) {
-      return "Data not tracked to this point yet!"
-    }
 
     return findDateDifference(new Date(dateObj.currentDate), dateValue)
   }
@@ -55,9 +52,18 @@ function App() {
             {dateString}
         </div>
     )
-}
+  }
 
-  const columns = [{
+  const createProgressColumn = (point) => {
+    return {
+      dataField: point + "DayDifference",
+      text: point,
+      isDummyField: 'true',
+      formatter: createTimeDifferenceFunction(point)
+    }
+  }
+
+  const staticColumns = [{
     dataField: 'dateName',
     text: 'Date Name',
     sort: true
@@ -66,22 +72,10 @@ function App() {
     text: 'Current Date',
     sort: true,
     formatter: dateFormatter
-  }, {
-    dataField: 'oneDayDifference',
-    text: 'Progress since yesterday',
-    isDummyField: 'true',
-    formatter: createTimeDifferenceFunction(1)
-  }, {
-    dataField: 'sevenDayDifference',
-    text: 'Progress since 7 days',
-    isDummyField: 'true',
-    formatter: createTimeDifferenceFunction(7)
-  }, {
-    dataField: 'thirtyDayDifference',
-    text: 'Progress since 30 days',
-    isDummyField: 'true',
-    formatter: createTimeDifferenceFunction(30)
-  },]
+  }]
+
+  const progressColumns = progressPoints.map(point => createProgressColumn(point))
+  const columns = staticColumns.concat(progressColumns)
 
   return (
     <div className="App">

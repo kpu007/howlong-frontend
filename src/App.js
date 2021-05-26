@@ -1,7 +1,10 @@
 import React, {useState, useEffect} from 'react'
 import dateService from './services/dateService'
 import BootstrapTable from 'react-bootstrap-table-next'
+import UsageGuide from './components/UsageGuide.js'
 import './App.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'react-bootstrap-table-next/dist/react-bootstrap-table2.min.css';
 
 function App() {
 
@@ -42,16 +45,20 @@ function App() {
 
   const dateFormatter = (cell, row) => {
     const dateVariable = new Date(row.currentDate)
-    const year = dateVariable.getFullYear()
-    const day = dateVariable.getDate()
-    const month = dateVariable.getMonth() + 1 //months are zero-indexed
-    const dateString = month + "/" + day + "/" + year
-
+    const dateString = formatDateNicely(dateVariable)
     return (
         <div>
             {dateString}
         </div>
     )
+  }
+
+  const formatDateNicely = (dateVariable) => {
+    const year = dateVariable.getFullYear()
+    const day = dateVariable.getDate()
+    const month = dateVariable.getMonth() + 1 //months are zero-indexed
+    const dateString = month + "/" + day + "/" + year
+    return dateString
   }
 
   const createProgressColumn = (point) => {
@@ -78,10 +85,21 @@ function App() {
   const columns = staticColumns.concat(progressColumns)
 
   return (
-    <div className="App">
-      <BootstrapTable keyField='dateName' data={dates} columns={columns} />
+    <div className="App" alignItems="center">
+      <h1>Date Tracker</h1>
+      <br/>
+      Last updated: {dates[0] ? formatDateNicely(new Date(dates[0].lastUpdated)) : ""}
+      <br/>
+      <br/>
+      <div>
+        <div class="center" style={{width:"80%"}}>
+          <BootstrapTable keyField='dateName' data={dates} columns={columns} />
+        </div>
+        <UsageGuide/>
+        <br/>
+      </div>
     </div>
-  );
+  )
 }
 
 export default App;

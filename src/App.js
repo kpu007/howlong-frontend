@@ -10,6 +10,7 @@ function App() {
 
   const [dates, setDates] = useState([])
   const progressPoints = [1, 2, 3, 4, 5, 6, 7, 15, 30]
+  const headerColor = '#EBF5FF'
 
   useEffect(() => {
     dateService.getAll().then(response => {
@@ -66,19 +67,31 @@ function App() {
       dataField: point + "DayDifference",
       text: point,
       isDummyField: 'true',
-      formatter: createTimeDifferenceFunction(point)
+      formatter: createTimeDifferenceFunction(point),
+      headerStyle: {
+        backgroundColor: headerColor
+      }
     }
   }
+
 
   const staticColumns = [{
     dataField: 'dateName',
     text: 'Date Name',
-    sort: true
+    sort: true,
+    headerStyle: {
+      backgroundColor: headerColor,
+      width: '20%'
+    }
   }, {
     dataField: 'currentDate',
     text: 'Current Date',
     sort: true,
-    formatter: dateFormatter
+    formatter: dateFormatter,
+    headerStyle: {
+      backgroundColor: headerColor,
+      width: '20%'
+    }
   }]
 
   const progressColumns = progressPoints.map(point => createProgressColumn(point))
@@ -93,7 +106,7 @@ function App() {
       <br/>
       <div>
         <div class="center" style={{width:"80%"}}>
-          <BootstrapTable keyField='dateName' data={dates} columns={columns} />
+          <BootstrapTable bootstrap4={true} keyField='dateName' data={dates} columns={columns}/>
         </div>
         <UsageGuide/>
         <br/>

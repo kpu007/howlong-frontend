@@ -1,8 +1,11 @@
 const UsageGuide = () => {
     return (
         <div>
-            Each table number X represents the progress (in days) made since X days ago, not just on the specific day.<br/>
-            As a result, numbers will be repeated if no progress is made on a specific day.
+            In the table column labeled X, the value Y (+Z) represents the following:<br/>
+            <ul>
+                <li>Y represents the progress (in days) made ever since X days ago</li>
+                <li>Z represents the progress (in days) made specifically on the day X days ago</li>
+            </ul>
         </div>
     )
 }

@@ -25,6 +25,18 @@ function App() {
     return dateDifference
   }
 
+  const findProgressOnSpecificDay = (dateObj, timePeriod) => {
+
+    if(dateObj.dateArray.length <= timePeriod) {
+      return 0;
+    }
+
+    const currentDate = new Date(dateObj.dateArray[timePeriod])
+    const previousDate = new Date(dateObj.dateArray[timePeriod - 1])
+  
+    return findDateDifference(currentDate, previousDate)
+  }
+
   const getDifferenceBetweenTime = (dateObj, timePeriod) => {
     if(!dateObj.dateArray) {
       return "No date array found!"
@@ -36,7 +48,7 @@ function App() {
 
     let dateValue = new Date(dateObj.dateArray[timePeriod])
 
-    return findDateDifference(new Date(dateObj.currentDate), dateValue)
+    return findDateDifference(new Date(dateObj.currentDate), dateValue) + " (+" + findProgressOnSpecificDay(dateObj, timePeriod) + ")"
   }
 
   const createTimeDifferenceFunction = (timePeriod) => {
@@ -90,7 +102,7 @@ function App() {
     formatter: dateFormatter,
     headerStyle: {
       backgroundColor: headerColor,
-      width: '20%'
+      width: '15%'
     }
   }]
 

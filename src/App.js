@@ -31,8 +31,8 @@ function App() {
       return 0;
     }
 
-    const currentDate = new Date(dateObj.dateArray[timePeriod])
-    const previousDate = new Date(dateObj.dateArray[timePeriod - 1])
+    const currentDate = new Date(dateObj.dateArray[timePeriod].archivedDateValue)
+    const previousDate = new Date(dateObj.dateArray[timePeriod - 1].archivedDateValue)
   
     return findDateDifference(currentDate, previousDate)
   }
@@ -46,7 +46,7 @@ function App() {
       return "N/A"
     }
 
-    let dateValue = new Date(dateObj.dateArray[timePeriod])
+    let dateValue = new Date(dateObj.dateArray[timePeriod].archivedDateValue)
 
     return findDateDifference(new Date(dateObj.currentDate), dateValue) + " (+" + findProgressOnSpecificDay(dateObj, timePeriod) + ")"
   }

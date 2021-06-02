@@ -11,7 +11,7 @@ const ProgressTable = () => {
   const [dates, setDates] = useState([])
   const progressPoints = [1, 2, 3, 4, 5, 6, 7, 15, 30]
   const headerColor = '#EBF5FF'
-
+  
   useEffect(() => {
     dateService.getAll().then(response => {
       console.log(response.data)

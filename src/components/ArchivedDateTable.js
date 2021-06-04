@@ -1,22 +1,28 @@
 import React, {useState, useEffect} from 'react'
 import dateService from '../services/dateService'
 import BootstrapTable from 'react-bootstrap-table-next'
+import DatePicker from 'react-date-picker';
 import '../App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'react-bootstrap-table-next/dist/react-bootstrap-table2.min.css';
 
 const ArchivedDateTable = () => {
     const [dates, setDates] = useState([])
+    const [currentDate, setCurrentDate] = useState(new Date())
     const headerColor = '#EBF5FF'
 
-    useEffect(() => {
-        //WIP, need to handle incorrect dates and add a date selector
-        dateService.getArchivedDatesForDate(new Date('5/24/2021').setHours(0, 0, 0, 0)).then(response => {
-          console.log(response.data)
-          setDates(response.data)
-        })
-      }, [])  
-     
+    const updateDates = () => {
+      dateService.getArchivedDatesForDate(currentDate).then(response => {
+        setDates(response.data)
+      })
+    }
+
+     useEffect(() => {
+        //WIP, need to handle dates without data
+        console.log("test")
+        updateDates()
+      }, [currentDate])  
+    
       const dateFormatter = (cell, row) => {
         const dateVariable = new Date(row.dateValue)
         const dateString = formatDateNicely(dateVariable)
@@ -59,7 +65,10 @@ const ArchivedDateTable = () => {
         <div className="App" alignItems="center">
             <div>
                 <div class="center" style={{width:"80%"}}>
-                    <BootstrapTable bootstrap4={true} keyField='dateName' data={dates} columns={columns}/>
+                  <DatePicker onChange={setCurrentDate} value={currentDate}/>
+                  <br/>
+                  <br/>
+                  <BootstrapTable bootstrap4={true} keyField='dateName' data={dates} columns={columns}/>
                 </div>
             </div>
         </div>

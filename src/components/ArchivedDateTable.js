@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react'
 import dateService from '../services/dateService'
+import metaService from '../services/metaService'
 import BootstrapTable from 'react-bootstrap-table-next'
 import DatePicker from 'react-date-picker';
 import '../App.css';
@@ -9,6 +10,7 @@ import 'react-bootstrap-table-next/dist/react-bootstrap-table2.min.css';
 const ArchivedDateTable = () => {
     const [dates, setDates] = useState([])
     const [currentDate, setCurrentDate] = useState(new Date())
+    const [firstArchivedDate, setFirstArchivedDate] = useState(new Date())
     const headerColor = '#EBF5FF'
 
     const updateDates = () => {
@@ -19,7 +21,9 @@ const ArchivedDateTable = () => {
 
      useEffect(() => {
         //WIP, need to handle dates without data
-        console.log("test")
+        metaService.getMeta().then(response => {
+          setFirstArchivedDate(new Date(response.data.firstArchivedDate))
+        })
         updateDates()
       }, [currentDate])  
     
@@ -65,7 +69,7 @@ const ArchivedDateTable = () => {
         <div className="App" alignItems="center">
             <div>
                 <div class="center" style={{width:"80%"}}>
-                  <DatePicker onChange={setCurrentDate} value={currentDate}/>
+                  <DatePicker onChange={setCurrentDate} value={currentDate} minDate={firstArchivedDate}/>
                   <br/>
                   <br/>
                   <BootstrapTable bootstrap4={true} keyField='dateName' data={dates} columns={columns}/>

@@ -27,7 +27,18 @@ const ArchivedDateTable = () => {
         updateDates()
       }, [currentDate])  
     
+      //The error message from the backend doesn't have any numbers
+      const containsNumber = (string) => {
+        return /\d/.test(string);
+      }
+
       const dateFormatter = (cell, row) => {
+        if(!containsNumber(row.dateValue)) {
+          return (
+            <div>No data found!</div>
+          )
+        }
+
         const dateVariable = new Date(row.dateValue)
         const dateString = formatDateNicely(dateVariable)
         return (

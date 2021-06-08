@@ -9,6 +9,7 @@ import {
 import {Button} from "@material-ui/core"
 import ProgressTable from './components/ProgressTable.js'
 import ArchivedDateTable from './components/ArchivedDateTable.js'
+import NotFound from './components/NotFound.js'
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'react-bootstrap-table-next/dist/react-bootstrap-table2.min.css';
@@ -38,6 +39,9 @@ function App() {
           <Route path="/archive">
             <ArchivedDateTable />
           </Route>          
+          <Route>
+            <NotFound />
+          </Route>
         </Switch>
       </Router>      
     </div>

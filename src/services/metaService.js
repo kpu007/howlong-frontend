@@ -1,5 +1,5 @@
 import axios from 'axios'
-const baseUrl = 'http://localhost:3001/meta'
+const baseUrl = '/meta'
 
 const getMeta = () => {
   return axios.get(baseUrl)

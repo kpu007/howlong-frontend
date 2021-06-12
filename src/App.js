@@ -9,6 +9,7 @@ import {
 import {Button} from "@material-ui/core"
 import ProgressTable from './components/ProgressTable.js'
 import ArchivedDateTable from './components/ArchivedDateTable.js'
+import Information from './components/Information.js'
 import NotFound from './components/NotFound.js'
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -27,6 +28,9 @@ function App() {
           <Button color="primary" component={Link} to="/archive">
             Archive Viewer
           </Button>
+          <Button color="primary" component={Link} to="/information">
+            Help
+          </Button>
         </div>
 
         <Switch>
@@ -39,6 +43,9 @@ function App() {
           <Route path="/archive">
             <ArchivedDateTable />
           </Route>          
+          <Route path="/information">
+            <Information />
+          </Route>
           <Route>
             <NotFound />
           </Route>

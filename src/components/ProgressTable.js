@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react'
 import dateService from '../services/dateService'
+import metaService from '../services/metaService'
 import UsageGuide from './UsageGuide.js'
 import BootstrapTable from 'react-bootstrap-table-next'
 import '../App.css';
@@ -9,14 +10,13 @@ import 'react-bootstrap-table-next/dist/react-bootstrap-table2.min.css';
 const ProgressTable = () => {
 
   const [dates, setDates] = useState([])
+  const [lastUpdated, setLastUpdated] = useState(new Date())
   const progressPoints = [1, 2, 3, 4, 5, 6, 7, 15, 30]
   const headerColor = '#EBF5FF'
   
   useEffect(() => {
-    dateService.getAll().then(response => {
-      console.log(response.data)
-      setDates(response.data)
-    })
+    metaService.getLastUpdated().then(resultDate => setLastUpdated(new Date(resultDate)))
+    dateService.getAll().then(resultDates => setDates(resultDates))
   }, [])  
 
   const findDateDifference = (date1, date2) => {
@@ -79,6 +79,10 @@ const ProgressTable = () => {
     return dateString
   }
 
+  const formatDateWithTimeZone = (dateVariable) => {
+    return dateVariable.toLocaleDateString('en-US', {timeZone: 'UTC'}) + " " + dateVariable.toLocaleTimeString('en-US', {timeZone: 'UTC'}) + " " + "UTC"
+  }
+
   const createProgressColumn = (point) => {
     return {
       dataField: point + "DayDifference",
@@ -116,7 +120,7 @@ const ProgressTable = () => {
 
   return (
     <div className="App" alignItems="center">
-      Last updated: {dates[0] ? formatDateNicely(new Date(dates[0].lastUpdated)) : ""}
+      Last updated: {formatDateWithTimeZone(lastUpdated)}
       <br/>
       <br/>
       <div>

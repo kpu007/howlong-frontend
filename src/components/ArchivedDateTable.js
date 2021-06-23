@@ -21,11 +21,9 @@ const ArchivedDateTable = () => {
 
      useEffect(() => {
         //WIP, need to handle dates without data
-        metaService.getMeta().then(response => {
-          setFirstArchivedDate(new Date(response.data.firstArchivedDate))
-        })
+        metaService.getFirstArchivedDate().then(resultDate => setFirstArchivedDate(new Date(resultDate)))
         updateDates()
-      }, [currentDate])  
+      }, [])  
     
       //The error message from the backend doesn't have any numbers
       const containsNumber = (string) => {

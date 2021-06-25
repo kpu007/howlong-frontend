@@ -12,13 +12,13 @@ const getArchivedDatesForDate = (date) => {
   return axios.get(baseUrl + "/archive/" + msDate)
 }
 
-/*
-const getDateByName = (name) => {
-  return axios.get(baseUrl + "/" + name)
-}*/
+const attemptUpdate = async (password) => {
+  const response = await axios.post(baseUrl + "/update", {"updateKey": password})
+  return response
+}
 
 export default {
   getAll,
-  getArchivedDatesForDate
-  //getDateByName
+  getArchivedDatesForDate,
+  attemptUpdate
 }

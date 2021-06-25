@@ -11,6 +11,7 @@ import ProgressTable from './components/ProgressTable.js'
 import ArchivedDateTable from './components/ArchivedDateTable.js'
 import Information from './components/Information.js'
 import NotFound from './components/NotFound.js'
+import UpdatePanel from './components/UpdatePanel.js'
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'react-bootstrap-table-next/dist/react-bootstrap-table2.min.css';
@@ -31,6 +32,9 @@ function App() {
           <Button color="primary" component={Link} to="/information">
             Help
           </Button>
+          <Button color="primary" component={Link} to="/update">
+            Update
+          </Button>
         </div>
 
         <Switch>
@@ -45,6 +49,9 @@ function App() {
           </Route>          
           <Route path="/information">
             <Information />
+          </Route>
+          <Route path="/update">
+            <UpdatePanel />
           </Route>
           <Route>
             <NotFound />

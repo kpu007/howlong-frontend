@@ -47,11 +47,16 @@ const ProgressTable = () => {
     }
 
     let dateValue = new Date(dateObj.dateArray[timePeriod].archivedDateValue)
-    let timePeriodDifference = findDateDifference(new Date(dateObj.lastUpdated).setHours(0, 0, 0, 0), new Date(dateObj.dateArray[timePeriod].archivedDateTime))
+    let timePeriodDifference = findDateDifference(new Date(dateObj.lastUpdated).setHours(0, 0, 0, 0), new Date(dateObj.dateArray[timePeriod].archivedDateTime).setHours(0, 0, 0, 0))
     
+    console.log(new Date(dateObj.lastUpdated).setHours(0, 0, 0, 0))
+    console.log(timePeriodDifference + " " + timePeriod)
+
+    /*
     if(timePeriodDifference != timePeriod) {
       return "Missing some date!"
     }
+    */
 
     return findDateDifference(new Date(dateObj.currentDate), dateValue) + " (+" + findProgressOnSpecificDay(dateObj, timePeriod) + ")"
   }
